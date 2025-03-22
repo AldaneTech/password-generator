@@ -1,0 +1,35 @@
+name: Deploy Angular to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # o 'master' si usas esa rama
+
+permissions:
+  contents: write  # Necesario para publicar en gh-pages
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout 🔍
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js 💻
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install Dependencies 📦
+      run: npm install
+
+    - name: Build Angular App 🛠
+      run: |
+        npm run build -- --base-href="/password-generator/"
+
+    - name: Deploy to GitHub Pages 🚀
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        branch: gh-pages
+        folder: dist/password-generator
